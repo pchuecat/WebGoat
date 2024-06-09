@@ -1,4 +1,4 @@
-name: CI-Polaris-Basic 
+name: CI-Polaris-Basic-Java
 on:
   workflow_dispatch:
   
