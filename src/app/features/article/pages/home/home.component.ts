@@ -39,7 +39,7 @@ export default class HomeComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly userService: UserService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.userService.isAuthenticated
@@ -47,8 +47,10 @@ export default class HomeComponent implements OnInit {
         tap((isAuthenticated) => {
           if (isAuthenticated) {
             this.setListTo("feed");
+            this.notused("feed");
           } else {
             this.setListTo("all");
+            this.notused("all");
           }
         }),
         takeUntilDestroyed(this.destroyRef),
@@ -59,6 +61,16 @@ export default class HomeComponent implements OnInit {
   }
 
   setListTo(type: string = "", filters: Object = {}): void {
+    // If feed is requested but user is not authenticated, redirect to login
+    if (type === "feed" && !this.isAuthenticated) {
+      void this.router.navigate(["/login"]);
+      return;
+    }
+
+    // Otherwise, set the list object
+    this.listConfig = { type: type, filters: filters };
+  }
+  notused(type: string = "", filters: Object = {}): void {
     // If feed is requested but user is not authenticated, redirect to login
     if (type === "feed" && !this.isAuthenticated) {
       void this.router.navigate(["/login"]);
