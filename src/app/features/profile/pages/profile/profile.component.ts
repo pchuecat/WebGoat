@@ -39,9 +39,47 @@ export class ProfileComponent implements OnInit {
     private readonly router: Router,
     private readonly userService: UserService,
     private readonly profileService: ProfileService,
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.profileService
+      .get(this.route.snapshot.params["username"])
+      .pipe(
+        catchError((error) => {
+          void this.router.navigate(["/"]);
+          return throwError(() => error);
+        }),
+        switchMap((profile) => {
+          return combineLatest([of(profile), this.userService.currentUser]);
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(([profile, user]) => {
+        this.profile = profile;
+        this.isUser = profile.username === user?.username;
+      });
+  }
+
+  megaInitFunction() {
+    this.profileService
+      .get(this.route.snapshot.params["username"])
+      .pipe(
+        catchError((error) => {
+          void this.router.navigate(["/"]);
+          return throwError(() => error);
+        }),
+        switchMap((profile) => {
+          return combineLatest([of(profile), this.userService.currentUser]);
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(([profile, user]) => {
+        this.profile = profile;
+        this.isUser = profile.username === user?.username;
+      });
+  }
+
+  megaInitFunction2() {
     this.profileService
       .get(this.route.snapshot.params["username"])
       .pipe(
