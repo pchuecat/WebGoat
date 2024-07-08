@@ -16,5 +16,14 @@ jobs:
           polaris_assessment_types: "SCA,SAST"
           polaris_application_name: "Renfe Testing"
           polaris_project_name: "Renfe Java Demo"
-      - name: Print Log File
-        run: cat .bridge/bridge.log
+      - name: Extract Test IDs
+        id: extract-ids
+        run: |
+          SAST_ID=$(grep 'Results for test "SAST"' .bridge/bridge.log | awk -F'"' '{print $6}')
+          SCA_ID=$(grep 'Results for test "SCA"' .bridge/bridge.log | awk -F'"' '{print $6}')
+          echo "SAST_ID=${SAST_ID}" >> $GITHUB_ENV
+          echo "SCA_ID=${SCA_ID}" >> $GITHUB_ENV
+      - name: Print Extracted Test IDs
+        run: |
+          echo "SAST Test ID: $SAST_ID"
+          echo "SCA Test ID: $SCA_ID"
