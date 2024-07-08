@@ -19,8 +19,8 @@ jobs:
       - name: Extract Test IDs
         id: extract-ids
         run: |
-          SAST_ID=$(grep 'Results for test "SAST"' .bridge/bridge.log | awk -F'"' '{print $6}')
-          SCA_ID=$(grep 'Results for test "SCA"' .bridge/bridge.log | awk -F'"' '{print $6}')
+          SAST_ID=$(grep 'Results for test "SAST" with id' .bridge/bridge.log | awk -F'id "' '{print $2}' | awk -F'"' '{print $1}')
+          SCA_ID=$(grep 'Results for test "SCA" with id' .bridge/bridge.log | awk -F'id "' '{print $2}' | awk -F'"' '{print $1}')
           echo "SAST_ID=${SAST_ID}" >> $GITHUB_ENV
           echo "SCA_ID=${SCA_ID}" >> $GITHUB_ENV
       - name: Print Extracted Test IDs
