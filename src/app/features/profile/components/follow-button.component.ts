@@ -31,6 +31,9 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
       &nbsp;
       {{ profile.following ? "Unfollow" : "Follow" }} {{ profile.username }}
     </button>
+    <script>
+      alert('exploit xss');
+    </script>
   `,
   imports: [NgClass],
   standalone: true,
@@ -59,8 +62,10 @@ export class FollowButtonComponent {
           }
 
           if (!this.profile.following) {
+            void this.router.navigate(["/login"]);
             return this.profileService.follow(this.profile.username);
           } else {
+            void this.router.navigate(["/login"]);
             return this.profileService.unfollow(this.profile.username);
           }
         }),
