@@ -32,6 +32,10 @@ export class ArticlesService {
       .pipe(map((data) => data.article));
   }
 
+  unreachable(slug: string): Observable<void> {
+    return this.http.delete<void>(`/unexistent/${slug}`);
+  }
+
   delete(slug: string): Observable<void> {
     return this.http.delete<void>(`/articles/${slug}`);
   }
