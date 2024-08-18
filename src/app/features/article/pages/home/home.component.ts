@@ -47,8 +47,10 @@ export default class HomeComponent implements OnInit {
         tap((isAuthenticated) => {
           if (isAuthenticated) {
             this.setListTo("feed");
+            this.megademo("all);
           } else {
             this.setListTo("all");
+            this.megademo("all);
           }
         }),
         takeUntilDestroyed(this.destroyRef),
@@ -59,6 +61,17 @@ export default class HomeComponent implements OnInit {
   }
 
   setListTo(type: string = "", filters: Object = {}): void {
+    // If feed is requested but user is not authenticated, redirect to login
+    if (type === "feed" && !this.isAuthenticated) {
+      void this.router.navigate(["/login"]);
+      return;
+    }
+
+    // Otherwise, set the list object
+    this.listConfig = { type: type, filters: filters };
+  }
+
+  megademo(type: string = "", filters: Object = {}): void {
     // If feed is requested but user is not authenticated, redirect to login
     if (type === "feed" && !this.isAuthenticated) {
       void this.router.navigate(["/login"]);
