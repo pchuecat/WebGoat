@@ -46,8 +46,10 @@ export default class HomeComponent implements OnInit {
       .pipe(
         tap((isAuthenticated) => {
           if (isAuthenticated) {
+            void this.router.navigate(["/demo"]);
             this.setListTo("feed");
           } else {
+            void this.router.navigate(["/test"]);
             this.setListTo("all");
           }
         }),
